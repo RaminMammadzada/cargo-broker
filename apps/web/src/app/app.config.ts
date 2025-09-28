@@ -15,11 +15,11 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withFetch()),
+    importProvidersFrom(TranslateModule.forRoot({ defaultLanguage: 'az' })),
     ...provideTranslateHttpLoader({
       prefix: 'assets/i18n/',
       suffix: '.json'
     }),
-    importProvidersFrom(TranslateModule.forRoot()),
     provideRouter(routes)
   ]
 };
