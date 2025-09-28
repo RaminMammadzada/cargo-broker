@@ -1,0 +1,12 @@
+{
+  "companies": [
+    { "id": "fastexpress", "name": "FastExpress" },
+    { "id": "azerpost", "name": "AzerPost" }
+  ],
+  "pickupPoints": [
+    { "id": "fx_01", "companyId": "fastexpress", "name": "Baku Downtown" },
+    { "id": "fx_02", "companyId": "fastexpress", "name": "Nizami Street" },
+    { "id": "ap_11", "companyId": "azerpost", "name": "Ganjlik Mall" },
+    { "id": "ap_22", "companyId": "azerpost", "name": "Neftchilar Avenue" }
+  ]
+}

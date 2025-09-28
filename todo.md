@@ -2,88 +2,92 @@
 
 ## 0) Project Setup
 
-- [ ] `npm create @angular@latest` (standalone app) → app name `web`
-- [ ] Add **Tailwind CSS** (postcss config) and base styles
-- [ ] Install deps: `@ngx-translate/core @ngx-translate/http-loader uuid`
-- [ ] Setup Jest (or keep Karma) and basic test script
-- [ ] Add ESLint + Prettier configs
+- [x] `npm create @angular@latest` (standalone app) → app name `web` (scaffolded under apps/web)
+- [x] Add **Tailwind CSS** (postcss config) and base styles
+- [x] Install deps: `@ngx-translate/core @ngx-translate/http-loader uuid`
+- [x] Keep Karma test runner for now (Jest migration tracked for later) and verified default spec
+- [x] Add ESLint + Prettier configs (via angular-eslint schematic)
 
 ## 1) App Shell & Routing
 
-- [ ] Create `app.routes.ts` with routes: `/`, `/order`, `/delivery`, `/review`, `/payment`, `/status/:id`
-- [ ] Implement `LayoutComponent` (header with LanguageSelector, stepper), `Footer`
-- [ ] Guard pipeline to ensure previous step validity
+- [x] Create `app.routes.ts` with routes: `/`, `/order`, `/delivery`, `/review`, `/payment`, `/status/:id` (placeholder components wired)
+- [x] Implement `LayoutComponent` shell (header + navigation; language selector/stepper components forthcoming), `Footer`
+- [x] Guard pipeline to ensure previous step validity
 
 ## 2) i18n
 
-- [ ] Integrate **ngx-translate** with `TranslateHttpLoader` from `/assets/i18n/*.json`
-- [ ] Create `az.json`, `en.json`, `ru.json` with core keys
-- [ ] `LanguageSelectorComponent` (persist to localStorage)
+- [x] Integrate **ngx-translate** with `TranslateHttpLoader` from `/assets/i18n/*.json`
+- [x] Create `az.json`, `en.json`, `ru.json` with core keys
+- [x] `LanguageSelectorComponent` (persist to localStorage)
+- [x] Fix runtime loader configuration so AZ/EN/RU dictionaries render instead of raw keys
+- [x] Add content strategy for feature copy (order/delivery/payment flows)
 
 ## 3) Data Models & State
 
-- [ ] Add interfaces in `data-access/models` (see architecture.md)
-- [ ] Create `AppStateService` using **Signals** with slices: language, orderDraft, delivery, payment
-- [ ] LocalStorage persistence (load on app start, save debounced)
-- [ ] Computed total from item prices
+- [x] Add interfaces in `data-access/models` (see architecture.md)
+- [x] Create `AppStateService` using **Signals** with slices: language, orderDraft, delivery, payment
+- [x] LocalStorage persistence (load on app start, save debounced)
+- [x] Computed total from item prices
 
 ## 4) Shared UI & Utilities
 
-- [ ] `UrlValidator`, `UniqueLinksValidator`
-- [ ] Reusable `FormField` components, `Button`, `Card`, `Stepper`, `ToastService`
+- [x] `UrlValidator`, `UniqueLinksValidator`
+- [x] Reusable `FormField` components, `Button`, `Card`, `Stepper`, `ToastService`
 
 ## 5) Feature: Order Form
 
-- [ ] `OrderFormComponent` (Reactive Form)
-- [ ] Add/Remove up to 3 items; each with url/size/color/price/notes
-- [ ] Real-time validation messages; Next disabled until valid
+- [x] `OrderFormComponent` (Reactive Form)
+- [x] Add/Remove up to 3 items; each with url/size/color/price/notes
+- [x] Real-time validation messages; Next disabled until valid
 
 ## 6) Feature: Delivery
 
-- [ ] `DeliveryFormComponent` (recipientName, method, company, pickup/address, customerCode)
-- [ ] Load shipping data from `/assets/mocks/shipping.json`
-- [ ] Conditional required fields (pickup vs courier)
+- [x] `DeliveryFormComponent` (recipientName, method, company, pickup/address, customerCode)
+- [x] Load shipping data from `/assets/mocks/shipping.json`
+- [x] Conditional required fields (pickup vs courier)
 
 ## 7) Feature: Review
 
-- [ ] `ReviewComponent` summarizes order + delivery + total
-- [ ] Edit buttons jump back to sections
-- [ ] Confirm → calls `OrderService.submit`
+- [x] `ReviewComponent` summarizes order + delivery + total
+- [x] Edit buttons jump back to sections
+- [x] Confirm → calls `OrderService.submit`
 
 ## 8) Mock Services & Data
 
-- [ ] `/assets/mocks/shipping.json` with companies + pickup points
-- [ ] `OrderService` → create `OrderSubmission` with mock id + `payment='initiated'` and store to localStorage inbox
-- [ ] `PaymentService` → `pay(orderId)` returns approved/failed after timeout
-- [ ] `StatusService` → read submissions by id
+- [x] `/assets/mocks/shipping.json` with companies + pickup points
+- [x] `OrderService` → create `OrderSubmission` with mock id + `payment='initiated'` and store to localStorage inbox
+- [x] `PaymentService` → `pay(orderId)` returns approved/failed after timeout
+- [x] `StatusService` → read submissions by id
 
 ## 9) Feature: Payment
 
-- [ ] `PaymentComponent` displays total + mock-pay button
-- [ ] Spinner during processing; result routes to `/status/:id`
+- [x] `PaymentComponent` displays total + mock-pay button
+- [x] Spinner during processing; result routes to `/status/:id`
 
 ## 10) Feature: Status
 
-- [ ] `StatusComponent` shows state (“Order received”, “Payment confirmed/failed”)
-- [ ] Link to “View orders” (optional inbox page)
+- [x] `StatusComponent` shows state (“Order received”, “Payment confirmed/failed”)
+- [x] Link to “View orders” (optional inbox page)
 
 ## 11) Accessibility & Polish
 
-- [ ] Keyboard focus traps on dialogs; skip-links
-- [ ] aria-labels, roles, input `for`/`id` bindings
-- [ ] Color contrast check; prefers-reduced-motion
+- [x] Keyboard focus traps on dialogs; skip-links
+- [x] aria-labels, roles, input `for`/`id` bindings
+- [x] Color contrast check; prefers-reduced-motion
 
 ## 12) Testing
 
-- [ ] Unit tests for validators and `AppStateService`
-- [ ] Component tests for OrderForm and DeliveryForm
+- [x] Unit tests for validators and `AppStateService`
+- [x] Component tests for OrderForm and DeliveryForm
+- [x] Component tests for layout shell and placeholder pages
+- [x] Component tests for shared UI elements (button, card, form-field, stepper, toast)
 - [ ] (Optional) Playwright e2e happy path
 
 ## 13) CI & Deploy
 
-- [ ] GitHub Actions: build + test workflow on push/PR
-- [ ] Configure baseHref for GitHub Pages (or Vercel)
-- [ ] Deploy job with artifact upload + pages deploy
+- [x] GitHub Actions: build + test workflow on push/PR
+- [x] Configure baseHref for GitHub Pages (or Vercel)
+- [x] Deploy job with artifact upload + pages deploy
 
 ## 14) Nice-to-have (Backlog)
 
@@ -95,7 +99,7 @@
 
 ## 15) Mock Files (starter)
 
-- [ ] Create `/assets/mocks/shipping.json`:
+- [x] Create `/assets/mocks/shipping.json`:
 
   ```json
   {
@@ -110,7 +114,7 @@
   }
   ```
 
-- [ ] Seed i18n keys (example):
+- [x] Seed i18n keys (example):
 
   ```json
   // assets/i18n/az.json

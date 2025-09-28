@@ -1,0 +1,24 @@
+# Node
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.lock-wscript
+
+# Angular build outputs
+dist
+.tmp
+.angular/cache
+
+# Environment
+.env.local
+.env.*.local
+
+# Editor
+.idea/
+.vscode/
+.DS_Store
+
+# Generated
+apps/web/node_modules
