@@ -1,59 +1,90 @@
-# Web
+# Cargo Broker Web App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+An Angular-powered prototype that walks merchants through simulating cargo orders in Azerbaijan. The application is fully localized (AZ/EN/RU), enforces an end-to-end checkout sequence, and persists mock submissions so teams can explore UX and content decisions.
 
-## Development server
+## Tech stack
 
-To start a local development server, run:
+- Angular standalone APIs (v18+)
+- Angular signals for client-side state management
+- Tailwind CSS for design tokens and layout primitives
+- `ngx-translate` for runtime localization
+- Jasmine/Karma with Puppeteer-driven headless Chromium for unit tests
 
-```bash
-ng serve
-```
+## Prerequisites
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 20+
+- npm 10+
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Install dependencies
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+## Run the development server
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The app is available at [http://localhost:4200](http://localhost:4200). Changing translations, styles, or features triggers a live reload.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Run unit tests
 
 ```bash
-ng test
+npm test -- --watch=false
 ```
 
-## Running end-to-end tests
+Tests execute in a Puppeteer-managed headless Chromium. If the binary fails to launch in your environment, install the missing system libraries or run the tests in a container that provides them.
 
-For end-to-end (e2e) testing, run:
+## Lint the codebase
 
 ```bash
-ng e2e
+npm run lint
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Build configurations
 
-## Additional Resources
+The project defines multiple Angular build targets:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `production`: optimized app shell used for deployment.
+- `github-pages`: production build with an adjusted base href so the app can run from a GitHub Pages subdirectory.
+
+To emit the GitHub Pages artifact locally:
+
+```bash
+npm run build -- --configuration=github-pages
+```
+
+The output is written to `dist/web/github-pages/browser`.
+
+## Project structure
+
+```
+src/
+  app/
+    data-access/       # Models, services, validators, guards
+    features/          # Feature components (order, delivery, payment, review)
+    layout/            # Shell layout, language selector, navigation
+    pages/             # Route-level wrappers for each journey step
+    shared/            # Reusable UI and accessibility utilities
+    testing/           # Translate helpers for specs
+  main.ts              # Bootstrap logic
+  styles.css           # Tailwind entry point
+public/
+  assets/i18n/         # AZ/EN/RU translation dictionaries
+  assets/mocks/        # Shipping dataset consumed by delivery flow
+```
+
+## Documentation
+
+- `docs/feature-copy-content-strategy.md` describes the voice, tone, and localization workflow.
+- `todo.md` in the repository root tracks completed milestones and upcoming tasks.
+- Root-level markdown files outline the architecture, customer workflow, and journey research.
+
+## Troubleshooting
+
+- **Chrome cannot start:** verify you have the required system libraries (e.g., `libatk-1.0`) or run `npm test` inside a container with the dependencies preinstalled.
+- **Translations show keys:** ensure `provideTranslateHttpLoader` is registered in `app.config.ts` and that the JSON dictionaries are served from `public/assets/i18n`.
+- **Guard blocks navigation:** the multi-step guard expects valid state slices; use the UI to progress through each step or reset the app from the status screen.
+
