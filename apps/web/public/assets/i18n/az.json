@@ -1,0 +1,272 @@
+{
+  "app": {
+    "brand": "Cargo Broker MVP"
+  },
+  "language": {
+    "label": "Dil",
+    "az": "Azərbaycan dili",
+    "en": "İngilis dili",
+    "ru": "Rus dili"
+  },
+  "nav": {
+    "order": "Sifariş",
+    "delivery": "Çatdırılma",
+    "review": "Yoxlama",
+    "payment": "Ödəniş",
+    "status": "Status",
+    "checkoutProgress": "Proses mərhələləri",
+    "stepStatus": {
+      "complete": "Tamamlandı",
+      "current": "Cari addım",
+      "upcoming": "Gələcək addım"
+    }
+  },
+  "landing": {
+    "badge": "Xoş gəldiniz",
+    "title": "Cargo sifariş köməkçisi MVP",
+    "description": "Əvvəlcə üstünlük verdiyiniz dili seçin və sizin adınızdan alacağımız üçədək məhsul linki əlavə edin.",
+    "actions": {
+      "start": "Sifariş prosesinə başla",
+      "review": "Yoxlama mərhələsinə bax"
+    }
+  },
+  "layout": {
+    "footer": {
+      "copyright": "© {{year}} Cargo Broker MVP. Bütün hüquqlar qorunur.",
+      "note": "İlkin prototip çərçivəsi."
+    },
+    "skipToContent": "Əsas məzmuna keç",
+    "homeLink": "Əsas səhifəyə qayıt"
+  },
+  "toast": {
+    "none": "Bildiriş yoxdur",
+    "close": "Bildirişi bağla",
+    "regionLabel": "Bildirişlər"
+  },
+  "pages": {
+    "order": {
+      "title": "Sifariş linkləri",
+      "description": "Bizdən alınmasını istədiyiniz üçədək məhsul linki əlavə edin. Hər link üçün ölçü, rəng, qiymət və qeydləri yazaraq komandamıza daha çox məlumat verə bilərsiniz."
+    },
+    "delivery": {
+      "title": "Çatdırılma detalları",
+      "description": "Kuryer və ya məntəqədən götürmə variantını seçin, alıcının məlumatlarını daxil edin və bağlamanın düzgün istiqamətləndirilməsi üçün şirkətin müştəri kodunu əlavə edin.",
+      "helper": "Çatdırılma seçimləri yoxlama addımına keçdikdən sonra saxlanılır."
+    },
+    "review": {
+      "title": "Yoxla və təsdiqlə",
+      "description": "Ödənişə keçməzdən əvvəl məhsul linklərini və çatdırılma seçimlərini bir daha gözdən keçirin.",
+      "placeholder": "Vəziyyət layı hazır olduqda xülasə kartları və təsdiq hərəkətləri burada göstəriləcək."
+    },
+    "payment": {
+      "title": "Sınaq ödənişi",
+      "description": "Sifariş məbləğini yoxlayın və status səhifəsinə keçmək üçün sınaq ödənişi başladın."
+    },
+    "status": {
+      "title": "Sifariş statusu",
+      "description": "Sınaq ödənişinin nəticəsini və növbəti addımları izləyin.",
+      "actions": {
+        "backToPayment": "Ödənişə qayıt",
+        "viewOrders": "Sifarişləri göstər",
+        "startNew": "Yeni sifarişə başla"
+      }
+    },
+    "orders": {
+      "title": "Sifariş qutusu",
+      "description": "Əvvəl göndərdiyiniz demo sifarişlərinə baxın və status səhifələrinə qayıdın.",
+      "actions": {
+        "viewStatus": "Statusa bax"
+      },
+      "empty": {
+        "title": "Hələ sifariş yoxdur",
+        "description": "Siyahını doldurmaq üçün demo sifariş göndərin. Bu brauzerdə qaldığınız müddətdə yazılar burada saxlanacaq.",
+        "action": "Yeni sifarişə başlayın"
+      }
+    }
+  },
+  "review": {
+    "summary": {
+      "order": {
+        "title": "Sifariş xülasəsi",
+        "description": "Davam etməzdən əvvəl hər bir məhsul linkini və detalları təsdiqləyin.",
+        "actions": {
+          "edit": "Sifarişi redaktə et"
+        },
+        "itemLabel": "Məhsul {{index}}",
+        "fields": {
+          "url": "Məhsul linki",
+          "size": "Ölçü",
+          "color": "Rəng",
+          "notes": "Qeydlər"
+        }
+      },
+      "delivery": {
+        "title": "Çatdırılma xülasəsi",
+        "description": "Çatdırılma üsulu və alıcı məlumatlarının düzgün olduğuna əmin olun.",
+        "actions": {
+          "edit": "Çatdırılmanı redaktə et"
+        },
+        "fields": {
+          "recipient": "Alıcı",
+          "method": {
+            "label": "Çatdırılma üsulu",
+            "options": {
+              "courier": "Kuryer çatdırılması",
+              "pickup": "Partnyor məntəqəsindən götürmə"
+            }
+          },
+          "company": "Logistika şirkəti",
+          "pickupPoint": "Götürmə məntəqəsi",
+          "address": "Kuryer ünvanı",
+          "customerCode": "Müştəri kodu"
+        }
+      },
+      "totals": {
+        "title": "Təsdiqə hazırsınız?",
+        "description": "Göndərdikdə mock sifariş yaradılacaq və ödəniş addımına keçəcəksiniz.",
+        "itemsLabel": "Məhsullar ({{count}})",
+        "deliveryLabel": "Çatdırılma",
+        "actions": {
+          "confirm": "Təsdiqlə və davam et"
+        }
+      }
+    }
+  },
+  "payment": {
+    "summary": {
+      "title": "Ödənişi tamamlayın",
+      "description": "Aşağıdakı məbləğ əsasında sınaq əməliyyatı aparacağıq.",
+      "total": "Ümumi məbləğ",
+      "helper": "Bu məbləğ prototip axınının işləməsini yoxlamaq üçün istifadə olunur."
+    },
+    "simulation": {
+      "title": "Ssenarini seçin",
+      "description": "Uğurlu və ya uğursuz nəticəni yoxlamaq üçün nəticəni seçin.",
+      "approved": "Uğurlu ödənişi sınaq et",
+      "failed": "Uğursuz ödənişi sınaq et"
+    },
+    "actions": {
+      "pay": "Ödənişi başlat"
+    },
+    "details": {
+      "title": "Sifariş detalları",
+      "orderId": "Sifariş nömrəsi",
+      "items": "Məhsullar",
+      "recipient": "Alıcı",
+      "method": "Çatdırılma üsulu"
+    },
+    "missing": {
+      "title": "Sifariş tapılmadı",
+      "description": "Zəhmət olmasa icmal addımına qayıdın və yenidən təsdiqləyin ki, yeni sifariş yaradaq."
+    },
+    "status": {
+      "idle": "",
+      "initiated": "Ödəniş icra olunur...",
+      "approved": "Ödəniş təsdiqləndi",
+      "failed": "Ödəniş baş tutmadı"
+    }
+  },
+  "status": {
+    "reference": "Sifariş #{{id}}",
+    "states": {
+      "initiated": "Ödəniş icra olunur",
+      "approved": "Ödəniş təsdiqləndi",
+      "failed": "Ödəniş baş tutmadı"
+    },
+    "helper": "Sınaq sifarişiniz gələcək üçün lokal qutuda saxlanılır.",
+    "summary": {
+      "total": "Ümumi məbləğ",
+      "recipient": "Alıcı"
+    },
+    "nextSteps": "Yeni sifarişə başlaya və ya ödəniş ssenarisini yenidən sınaqdan keçirə bilərsiniz.",
+    "missing": {
+      "title": "Sifariş tapılmadı",
+      "description": "Bu status saxlanılan sifarişlə uyğun gəlmir. Davam etmək üçün yeni sınaq sifarişi göndərin."
+    }
+  },
+  "orders": {
+    "reference": "Sifariş #{{id}}",
+    "createdAt": "Yaradılma tarixi {{date}}",
+    "total": "Cəm",
+    "recipient": "Alıcı"
+  },
+  "order": {
+    "form": {
+      "add": "Başqa link əlavə et",
+      "remove": "Sil",
+      "itemLabel": "Məhsul {{index}}",
+      "itemHelper": "Məhsul linkini və faydalı qeydləri daxil edin.",
+      "removeItem": "{{index}}-ci məhsulu sil",
+      "actions": {
+        "next": "Çatdırılmaya davam et"
+      },
+      "fields": {
+        "url": {
+          "label": "Məhsul linki",
+          "placeholder": "https://misal.az/mehsul"
+        },
+        "size": {
+          "label": "Ölçü",
+          "hint": "İstəyə bağlı"
+        },
+        "color": {
+          "label": "Rəng",
+          "hint": "İstəyə bağlı"
+        },
+        "price": {
+          "label": "Təxmini qiymət (AZN)",
+          "hint": "İstəyə bağlı — cəmi üçün istifadə olunur"
+        },
+        "notes": {
+          "label": "Qeydlər",
+          "hint": "Alış üzrə əlavə göstərişləri yazın"
+        }
+      },
+      "errors": {
+        "required": "Bu sahə məcburidir.",
+        "url": "Xahiş olunur http və ya https ilə başlayan düzgün URL daxil edin.",
+        "priceMin": "Qiymət sıfır və ya daha böyük olmalıdır.",
+        "duplicate": "Hər link unikal olmalıdır."
+      }
+    }
+  },
+  "delivery": {
+    "form": {
+      "title": "Sifarişinizi hara göndərək?",
+      "subtitle": "Bu məlumatlar bağlamanı düzgün partnyora təhvil verməyimizə kömək edir.",
+      "actions": {
+        "back": "Sifariş addımına qayıt",
+        "next": "Yoxlamaya davam et"
+      },
+      "fields": {
+        "recipientName": {
+          "label": "Alıcının adı"
+        },
+        "customerCode": {
+          "label": "Müştəri kodu"
+        },
+        "method": {
+          "label": "Çatdırılma üsulu",
+          "options": {
+            "courier": "Kuryer çatdırılması",
+            "pickup": "Partnyor məntəqəsindən götür"
+          }
+        },
+        "company": {
+          "label": "Logistika şirkəti",
+          "placeholder": "Şirkəti seçin"
+        },
+        "pickupPoint": {
+          "label": "Götürmə məntəqəsi",
+          "placeholder": "Məntəqə seçin"
+        },
+        "address": {
+          "label": "Kuryer ünvanı"
+        }
+      },
+      "errors": {
+        "required": "Bu sahə məcburidir."
+      }
+    }
+  }
+}
