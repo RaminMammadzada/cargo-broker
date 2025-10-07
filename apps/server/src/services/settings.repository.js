@@ -4,6 +4,13 @@ import { fileURLToPath, pathToFileURL } from 'url';
 
 const FALLBACK_FILE_URL = new URL('../../var/telegram-settings.json', import.meta.url);
 
+const DEFAULT_SETTINGS = {
+  botToken: null,
+  phoneNumber: null,
+  chatId: null,
+  lastSyncedAt: null
+};
+
 function resolveSettingsFileUrl(explicitUrl) {
   if (explicitUrl) {
     return explicitUrl;
@@ -25,25 +32,56 @@ export class SettingsRepository {
 
   async getTelegramSettings() {
     const data = await this.readFile();
-    return { chatId: data.chatId ?? null };
+    return {
+      phoneNumber: data.phoneNumber ?? null,
+      chatId: data.chatId ?? null,
+      lastSyncedAt: data.lastSyncedAt ?? null,
+      botTokenConfigured: Boolean(data.botToken ?? process.env.TELEGRAM_BOT_TOKEN ?? null)
+    };
   }
 
-  async updateTelegramSettings(chatId) {
-    const payload = { chatId: chatId ?? null };
+  async updateTelegramSettings({ phoneNumber = null, chatId = null, lastSyncedAt = null }) {
+    const current = await this.readFile();
+    const payload = {
+      ...current,
+      phoneNumber,
+      chatId,
+      lastSyncedAt
+    };
     await this.writeFile(payload);
-    return payload;
+    return {
+      phoneNumber: payload.phoneNumber,
+      chatId: payload.chatId,
+      lastSyncedAt: payload.lastSyncedAt,
+      botTokenConfigured: Boolean(payload.botToken ?? process.env.TELEGRAM_BOT_TOKEN ?? null)
+    };
+  }
+
+  async persistBotToken(botToken) {
+    const current = await this.readFile();
+    const payload = {
+      ...current,
+      botToken: botToken ?? null
+    };
+    await this.writeFile(payload);
+    return payload.botToken;
+  }
+
+  async getBotToken() {
+    const data = await this.readFile();
+    return data.botToken ?? null;
   }
 
   async readFile() {
     try {
       const file = await readFile(this.fileUrl, 'utf-8');
-      return JSON.parse(file);
+      const data = JSON.parse(file);
+      return { ...structuredClone(DEFAULT_SETTINGS), ...data };
     } catch (error) {
       if (error.code === 'ENOENT') {
         await this.ensureDirectory();
-        const defaults = { chatId: null };
-        await this.writeFile(defaults);
-        return defaults;
+        await this.writeFile(DEFAULT_SETTINGS);
+        return structuredClone(DEFAULT_SETTINGS);
       }
       throw error;
     }

@@ -31,15 +31,25 @@ describe('TelegramSettingsService', () => {
 
     const request = httpMock.expectOne('/api/settings/telegram');
     expect(request.request.method).toBe('GET');
-    request.flush({ chatId: '12345' });
+    request.flush({
+      phoneNumber: '994551234567',
+      chatId: '12345',
+      lastSyncedAt: '2024-01-01T00:00:00.000Z',
+      botTokenConfigured: true
+    });
   });
 
-  it('should update the telegram chat id', () => {
-    service.updateSettings('6789').subscribe();
+  it('should update the telegram phone number', () => {
+    service.updateSettings('+994 (55) 678 90 00').subscribe();
 
     const request = httpMock.expectOne('/api/settings/telegram');
     expect(request.request.method).toBe('PUT');
-    expect(request.request.body).toEqual({ chatId: '6789' });
-    request.flush({ chatId: '6789' });
+    expect(request.request.body).toEqual({ phoneNumber: '+994 (55) 678 90 00' });
+    request.flush({
+      phoneNumber: '994556789000',
+      chatId: '6789',
+      lastSyncedAt: '2024-01-01T00:00:00.000Z',
+      botTokenConfigured: true
+    });
   });
 });
