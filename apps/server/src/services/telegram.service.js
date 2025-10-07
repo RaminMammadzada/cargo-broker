@@ -1,22 +1,36 @@
 import { formatOrderMessage } from '../utils/order-formatter.js';
+import { comparePhoneNumbers, sanitisePhoneNumber } from '../utils/phone-number.js';
+import { createAutomationResolver } from './telegram.chat-resolver.js';
 
 export class TelegramService {
   constructor(settingsRepository, options = {}) {
     this.settingsRepository = settingsRepository;
-    this.botToken = options.botToken ?? process.env.TELEGRAM_BOT_TOKEN;
+    this.botToken = options.botToken ?? process.env.TELEGRAM_BOT_TOKEN ?? null;
     this.apiBaseUrl = options.apiBaseUrl ?? 'https://api.telegram.org';
+    this.automationResolver =
+      options.automationResolver ?? createAutomationResolver(options.automationConfig ?? null);
   }
 
-  ensureBotToken() {
-    if (!this.botToken) {
-      const error = new Error('Telegram bot token is not configured');
-      error.status = 500;
-      throw error;
+  async ensureBotToken() {
+    if (this.botToken) {
+      return this.botToken;
     }
+
+    if (typeof this.settingsRepository.getBotToken === 'function') {
+      const stored = await this.settingsRepository.getBotToken();
+      if (stored) {
+        this.botToken = stored;
+        return this.botToken;
+      }
+    }
+
+    const error = new Error('Telegram bot token is not configured');
+    error.status = 500;
+    throw error;
   }
 
   async sendOrderNotification(submission) {
-    this.ensureBotToken();
+    await this.ensureBotToken();
     const { chatId } = await this.settingsRepository.getTelegramSettings();
 
     if (!chatId) {
@@ -48,6 +62,68 @@ export class TelegramService {
     }
 
     return response.json();
+  }
+
+  async resolveChatIdByPhoneNumber(phoneNumber) {
+    const normalisedInput = typeof phoneNumber === 'string' ? phoneNumber.trim() : phoneNumber;
+    const sanitised = sanitisePhoneNumber(normalisedInput);
+    const botToken = await this.ensureBotToken();
+
+    const url = `${this.apiBaseUrl}/bot${botToken}/getUpdates`;
+    const response = await fetch(url, { method: 'GET' });
+
+    if (!response.ok) {
+      const body = await response.text();
+      const error = new Error(`Failed to load Telegram updates: ${response.statusText}`);
+      error.status = 502;
+      error.details = body;
+      throw error;
+    }
+
+    const payload = await response.json();
+    if (payload.ok === false) {
+      const error = new Error('Telegram API returned an error while fetching updates');
+      error.status = 502;
+      error.details = payload.description ?? payload;
+      throw error;
+    }
+
+    const updates = Array.isArray(payload.result) ? payload.result : [];
+
+    for (const update of updates) {
+      const message = update.message ?? update.edited_message ?? null;
+      if (!message) {
+        continue;
+      }
+
+      if (message.contact && comparePhoneNumbers(message.contact.phone_number, sanitised)) {
+        return { chatId: String(message.chat.id), phoneNumber: sanitised };
+      }
+
+      if (message.text && comparePhoneNumbers(message.text, sanitised)) {
+        return { chatId: String(message.chat.id), phoneNumber: sanitised };
+      }
+    }
+
+    if (this.automationResolver) {
+      try {
+        const resolved = await this.automationResolver(normalisedInput, sanitised);
+        if (resolved) {
+          return resolved;
+        }
+      } catch (automationError) {
+        const error = new Error('Failed to resolve Telegram chat via automation');
+        error.status = 502;
+        error.details = automationError.message ?? automationError;
+        throw error;
+      }
+    }
+
+    const error = new Error(
+      'Unable to locate a Telegram chat for the provided phone number. Share your contact with the bot and try again.'
+    );
+    error.status = 404;
+    throw error;
   }
 }
 

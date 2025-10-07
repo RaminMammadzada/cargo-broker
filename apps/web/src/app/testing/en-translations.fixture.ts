@@ -205,26 +205,30 @@ export const enTranslations = {
     telegram: {
       badge: 'Admin',
       title: 'Telegram notifications',
-      description: 'Set the Telegram chat ID that will receive order submissions.',
-      lastUpdated: 'Last updated {{timestamp}}',
+      description:
+        'Enter the phone number linked to the Telegram account that should receive order submissions. Make sure the account has started a chat with your bot and shared their contact details.',
+      lastUpdated: 'Last synced {{timestamp}}',
       form: {
-        chatId: {
-          label: 'Telegram chat ID',
-          hint: 'Use the numeric chat ID or group ID (include the leading - for groups).',
-          placeholder: 'Enter chat ID'
+        phoneNumber: {
+          label: 'Phone number',
+          hint: 'Use the full number. We will automatically match it to the chat once the bot sees the contact.',
+          placeholder: '+994 55 123 45 67'
         },
         actions: {
           save: 'Save settings'
         },
         errors: {
-          required: 'Chat ID is required.',
-          pattern: 'Use digits only and include a leading dash for groups.',
+          required: 'Phone number is required.',
+          pattern: 'Use digits, spaces, brackets or plus sign only.',
           generic: 'Update failed. Try again.'
-        }
+        },
+        missingBotToken:
+          'The Telegram bot token is missing. Update the configuration file or environment variable and reload this page.',
+        currentChat: 'Current chat ID: {{chat}}'
       },
       notifications: {
-        saved: 'Telegram chat ID updated.',
-        saveError: 'Unable to update Telegram chat ID. Try again.',
+        saved: 'Telegram recipient updated.',
+        saveError: 'Unable to update Telegram recipient. Try again.',
         loadError: 'Unable to load Telegram settings.'
       }
     }

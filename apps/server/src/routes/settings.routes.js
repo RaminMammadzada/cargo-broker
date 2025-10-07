@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-export function createSettingsRouter(settingsRepository) {
+export function createSettingsRouter(settingsRepository, telegramService) {
   const router = Router();
 
   router.get('/telegram', async (req, res, next) => {
@@ -14,21 +14,19 @@ export function createSettingsRouter(settingsRepository) {
 
   router.put('/telegram', async (req, res, next) => {
     try {
-      const { chatId } = req.body ?? {};
-      if (typeof chatId !== 'string' || !chatId.trim()) {
-        const error = new Error('A Telegram chat id is required');
+      const { phoneNumber } = req.body ?? {};
+      if (typeof phoneNumber !== 'string' || !phoneNumber.trim()) {
+        const error = new Error('A Telegram phone number is required');
         error.status = 400;
         throw error;
       }
 
-      const sanitised = chatId.trim();
-      if (!/^[-\d]+$/.test(sanitised)) {
-        const error = new Error('Telegram chat id must contain digits and optional leading dash');
-        error.status = 400;
-        throw error;
-      }
-
-      const updated = await settingsRepository.updateTelegramSettings(sanitised);
+      const resolved = await telegramService.resolveChatIdByPhoneNumber(phoneNumber);
+      const updated = await settingsRepository.updateTelegramSettings({
+        phoneNumber: resolved.phoneNumber,
+        chatId: resolved.chatId,
+        lastSyncedAt: new Date().toISOString()
+      });
       res.json(updated);
     } catch (error) {
       next(error);
