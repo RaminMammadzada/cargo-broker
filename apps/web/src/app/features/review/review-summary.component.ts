@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 import { AppStateService } from '../../data-access/state/app-state.service';
 import { DeliveryInfo, ProductLink } from '../../data-access/models/order.model';
 import { OrderService } from '../../data-access/services/order.service';
+import { OrderNotificationService } from '../../data-access/services/order-notification.service';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { CardComponent } from '../../shared/ui/card/card.component';
+import { ToastService } from '../../shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-review-summary',
@@ -194,7 +197,10 @@ import { CardComponent } from '../../shared/ui/card/card.component';
 export class ReviewSummaryComponent {
   private readonly appState = inject(AppStateService);
   private readonly orderService = inject(OrderService);
+  private readonly orderNotificationService = inject(OrderNotificationService);
   private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
+  private readonly toast = inject(ToastService);
 
   readonly items = computed<ProductLink[]>(() => this.appState.orderDraft().items);
   readonly deliveryInfo = computed<DeliveryInfo | null>(() => this.appState.delivery());
@@ -218,10 +224,21 @@ export class ReviewSummaryComponent {
 
     this.submitting.set(true);
     const submission = this.orderService.submit(this.appState.orderDraft(), delivery, this.total());
-    this.appState.setPaymentStatus('initiated');
 
     try {
+      await firstValueFrom(this.orderNotificationService.notifyOrder(submission));
+      this.appState.setPaymentStatus('initiated');
       await this.router.navigateByUrl('/payment', { state: { orderId: submission.id } });
+      this.toast.show({
+        variant: 'success',
+        message: this.translate.instant('review.summary.notifications.success')
+      });
+    } catch (error) {
+      console.error('Failed to send Telegram notification', error);
+      this.toast.show({
+        variant: 'error',
+        message: this.translate.instant('review.summary.notifications.error')
+      });
     } finally {
       this.submitting.set(false);
     }

@@ -33,7 +33,8 @@
   "layout": {
     "footer": {
       "copyright": "© {{year}} Cargo Broker MVP. Bütün hüquqlar qorunur.",
-      "note": "İlkin prototip çərçivəsi."
+      "note": "İlkin prototip çərçivəsi.",
+      "adminLink": "Admin ayarları"
     },
     "skipToContent": "Əsas məzmuna keç",
     "homeLink": "Əsas səhifəyə qayıt"
@@ -129,6 +130,10 @@
         "actions": {
           "confirm": "Təsdiqlə və davam et"
         }
+      },
+      "notifications": {
+        "success": "Sifariş məlumatları Telegram-a göndərildi.",
+        "error": "Sifarişi Telegram-a göndərmək alınmadı. Zəhmət olmasa yenidən cəhd edin."
       }
     }
   },
@@ -189,6 +194,34 @@
     "createdAt": "Yaradılma tarixi {{date}}",
     "total": "Cəm",
     "recipient": "Alıcı"
+  },
+  "admin": {
+    "telegram": {
+      "badge": "Admin",
+      "title": "Telegram bildirişləri",
+      "description": "Sifariş məlumatlarını alacaq Telegram chat ID-ni müəyyən edin.",
+      "lastUpdated": "Son yenilənmə {{timestamp}}",
+      "form": {
+        "chatId": {
+          "label": "Telegram chat ID",
+          "hint": "Rəqəmsal chat və ya qrup ID-sindən istifadə edin (qrup üçün əvvəldə '-' saxlayın).",
+          "placeholder": "Chat ID daxil edin"
+        },
+        "actions": {
+          "save": "Ayarları yadda saxla"
+        },
+        "errors": {
+          "required": "Chat ID mütləqdir.",
+          "pattern": "Yalnız rəqəmlərdən istifadə edin və qruplar üçün əvvəlində '-' əlavə edin.",
+          "generic": "Yeniləmə alınmadı. Yenidən cəhd edin."
+        }
+      },
+      "notifications": {
+        "saved": "Telegram chat ID yeniləndi.",
+        "saveError": "Telegram chat ID-ni yeniləmək mümkün olmadı. Yenidən cəhd edin.",
+        "loadError": "Telegram ayarlarını yükləmək mümkün olmadı."
+      }
+    }
   },
   "order": {
     "form": {

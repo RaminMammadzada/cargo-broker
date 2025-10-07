@@ -47,7 +47,15 @@ import { LanguageSelectorComponent } from './language-selector.component';
       <footer class="border-t border-slate-200 bg-white/70 backdrop-blur" role="contentinfo">
         <div class="mx-auto flex max-w-5xl flex-col gap-2 px-6 py-6 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>{{ 'layout.footer.copyright' | translate: { year: currentYear } }}</p>
-          <p class="text-xs text-slate-600">{{ 'layout.footer.note' | translate }}</p>
+          <p class="flex items-center gap-3 text-xs text-slate-600">
+            <span>{{ 'layout.footer.note' | translate }}</span>
+            <a
+              routerLink="/admin/telegram"
+              class="font-medium text-primary-600 underline-offset-2 hover:underline"
+            >
+              {{ 'layout.footer.adminLink' | translate }}
+            </a>
+          </p>
         </div>
       </footer>
     </div>

@@ -2,13 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { signal, WritableSignal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { of, throwError } from 'rxjs';
 
 import { ReviewSummaryComponent } from './review-summary.component';
 import { AppStateService } from '../../data-access/state/app-state.service';
 import { DeliveryInfo, OrderDraft } from '../../data-access/models/order.model';
 import { OrderService } from '../../data-access/services/order.service';
+import { OrderNotificationService } from '../../data-access/services/order-notification.service';
 import { provideTranslateTesting } from '../../testing/translate-testing.module';
 import { enTranslations } from '../../testing/en-translations.fixture';
+import { ToastService } from '../../shared/ui/toast/toast.service';
 
 describe('ReviewSummaryComponent', () => {
   let fixture: ComponentFixture<ReviewSummaryComponent>;
@@ -18,8 +21,10 @@ describe('ReviewSummaryComponent', () => {
   let totalSignal: WritableSignal<number>;
   let setPaymentStatusSpy: jasmine.Spy;
   let orderServiceSubmitSpy: jasmine.Spy;
+  let orderNotificationSpy: jasmine.Spy;
   let routerNavigateSpy: jasmine.Spy;
   let translate: TranslateService;
+  let toastShowSpy: jasmine.Spy;
 
   beforeEach(async () => {
     orderDraftSignal = signal<OrderDraft>({
@@ -59,13 +64,19 @@ describe('ReviewSummaryComponent', () => {
       id: 'mock-order-id'
     });
 
-    routerNavigateSpy = jasmine.createSpy('navigateByUrl').and.returnValue(Promise.resolve(true));
+    routerNavigateSpy = jasmine
+      .createSpy('navigateByUrl')
+      .and.returnValue(Promise.resolve(true));
+    orderNotificationSpy = jasmine.createSpy('notifyOrder').and.returnValue(of(void 0));
+    toastShowSpy = jasmine.createSpy('show');
 
     await TestBed.configureTestingModule({
       imports: [ReviewSummaryComponent, provideTranslateTesting()],
       providers: [
         { provide: AppStateService, useValue: mockState },
         { provide: OrderService, useValue: { submit: orderServiceSubmitSpy } },
+        { provide: OrderNotificationService, useValue: { notifyOrder: orderNotificationSpy } },
+        { provide: ToastService, useValue: { show: toastShowSpy } },
         { provide: Router, useValue: { navigateByUrl: routerNavigateSpy } }
       ]
     }).compileComponents();
@@ -97,8 +108,12 @@ describe('ReviewSummaryComponent', () => {
     await fixture.whenStable();
 
     expect(orderServiceSubmitSpy).toHaveBeenCalled();
+    expect(orderNotificationSpy).toHaveBeenCalled();
     expect(setPaymentStatusSpy).toHaveBeenCalledWith('initiated');
     expect(routerNavigateSpy).toHaveBeenCalledWith('/payment', { state: { orderId: 'mock-order-id' } });
+    expect(toastShowSpy).toHaveBeenCalledWith(
+      jasmine.objectContaining({ variant: 'success' })
+    );
   });
 
   it('should prevent confirmation when delivery information is missing', () => {
@@ -111,5 +126,21 @@ describe('ReviewSummaryComponent', () => {
 
     expect(orderServiceSubmitSpy).not.toHaveBeenCalled();
     expect(setPaymentStatusSpy).not.toHaveBeenCalled();
+  });
+
+  it('should show an error toast if the notification fails', async () => {
+    orderNotificationSpy.and.returnValue(throwError(() => new Error('network')));
+
+    const confirmButton = element.querySelector('[data-testid="confirm-order"]') as HTMLButtonElement;
+    confirmButton.click();
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    expect(routerNavigateSpy).not.toHaveBeenCalled();
+    expect(setPaymentStatusSpy).not.toHaveBeenCalled();
+    expect(toastShowSpy).toHaveBeenCalledWith(
+      jasmine.objectContaining({ variant: 'error' })
+    );
   });
 });
