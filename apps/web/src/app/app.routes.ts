@@ -37,5 +37,10 @@ export const routes: Routes = [
     path: 'orders',
     loadComponent: () => import('./pages/orders/orders.page').then((m) => m.OrdersPageComponent)
   },
+  {
+    path: 'admin/telegram',
+    loadComponent: () =>
+      import('./pages/admin/telegram-settings.page').then((m) => m.TelegramSettingsPageComponent)
+  },
   { path: '**', redirectTo: '' }
 ];

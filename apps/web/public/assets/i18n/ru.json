@@ -33,7 +33,8 @@
   "layout": {
     "footer": {
       "copyright": "© {{year}} Cargo Broker MVP. Все права защищены.",
-      "note": "Начальный прототип приложения."
+      "note": "Начальный прототип приложения.",
+      "adminLink": "Админ-панель"
     },
     "skipToContent": "Перейти к основному содержимому",
     "homeLink": "На главную"
@@ -208,6 +209,10 @@
         "actions": {
           "confirm": "Подтвердить и продолжить"
         }
+      },
+      "notifications": {
+        "success": "Данные заказа отправлены в Telegram.",
+        "error": "Не удалось отправить заказ в Telegram. Попробуйте ещё раз."
       }
     }
   },
@@ -268,5 +273,33 @@
     "createdAt": "Создан {{date}}",
     "total": "Итого",
     "recipient": "Получатель"
+  },
+  "admin": {
+    "telegram": {
+      "badge": "Админ",
+      "title": "Уведомления Telegram",
+      "description": "Укажите Telegram-чат, который будет получать данные о заказах.",
+      "lastUpdated": "Последнее обновление {{timestamp}}",
+      "form": {
+        "chatId": {
+          "label": "Telegram chat ID",
+          "hint": "Используйте числовой идентификатор чата или группы (для групп оставьте ведущий минус).",
+          "placeholder": "Введите chat ID"
+        },
+        "actions": {
+          "save": "Сохранить настройки"
+        },
+        "errors": {
+          "required": "Требуется chat ID.",
+          "pattern": "Используйте только цифры и оставьте ведущий минус для групп.",
+          "generic": "Не удалось обновить. Попробуйте ещё раз."
+        }
+      },
+      "notifications": {
+        "saved": "Telegram chat ID обновлён.",
+        "saveError": "Не удалось обновить Telegram chat ID. Попробуйте ещё раз.",
+        "loadError": "Не удалось загрузить настройки Telegram."
+      }
+    }
   }
 }

@@ -9,6 +9,7 @@ import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
+import { APP_CONFIG, DEFAULT_APP_CONFIG } from './data-access/config/app-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
       prefix: 'assets/i18n/',
       suffix: '.json'
     }),
-    provideRouter(routes)
+    provideRouter(routes),
+    { provide: APP_CONFIG, useValue: DEFAULT_APP_CONFIG }
   ]
 };

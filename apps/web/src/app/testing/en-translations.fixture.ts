@@ -36,7 +36,8 @@ export const enTranslations = {
     homeLink: 'Go to home',
     footer: {
       copyright: '© {{year}} Cargo Broker MVP. All rights reserved.',
-      note: 'Initial prototype scaffolding.'
+      note: 'Initial prototype scaffolding.',
+      adminLink: 'Admin settings'
     }
   },
   toast: {
@@ -135,6 +136,10 @@ export const enTranslations = {
         actions: {
           confirm: 'Confirm & continue'
         }
+      },
+      notifications: {
+        success: 'Order details sent to Telegram.',
+        error: "We couldn't send the order to Telegram. Please try again."
       }
     }
   },
@@ -195,6 +200,34 @@ export const enTranslations = {
     createdAt: 'Created on {{date}}',
     total: 'Total',
     recipient: 'Recipient'
+  },
+  admin: {
+    telegram: {
+      badge: 'Admin',
+      title: 'Telegram notifications',
+      description: 'Set the Telegram chat ID that will receive order submissions.',
+      lastUpdated: 'Last updated {{timestamp}}',
+      form: {
+        chatId: {
+          label: 'Telegram chat ID',
+          hint: 'Use the numeric chat ID or group ID (include the leading - for groups).',
+          placeholder: 'Enter chat ID'
+        },
+        actions: {
+          save: 'Save settings'
+        },
+        errors: {
+          required: 'Chat ID is required.',
+          pattern: 'Use digits only and include a leading dash for groups.',
+          generic: 'Update failed. Try again.'
+        }
+      },
+      notifications: {
+        saved: 'Telegram chat ID updated.',
+        saveError: 'Unable to update Telegram chat ID. Try again.',
+        loadError: 'Unable to load Telegram settings.'
+      }
+    }
   },
   order: {
     form: {

@@ -9,6 +9,8 @@ import { provideTranslateTesting } from '../../testing/translate-testing.module'
 import { AppStateService } from '../../data-access/state/app-state.service';
 import { DeliveryInfo, OrderDraft } from '../../data-access/models/order.model';
 import { OrderService } from '../../data-access/services/order.service';
+import { OrderNotificationService } from '../../data-access/services/order-notification.service';
+import { of } from 'rxjs';
 
 describe('ReviewPageComponent', () => {
   let fixture: ComponentFixture<ReviewPageComponent>;
@@ -53,6 +55,10 @@ describe('ReviewPageComponent', () => {
           } as Partial<AppStateService>
         },
         { provide: OrderService, useValue: { submit: jasmine.createSpy('submit') } },
+        {
+          provide: OrderNotificationService,
+          useValue: { notifyOrder: jasmine.createSpy('notifyOrder').and.returnValue(of(void 0)) }
+        },
         { provide: Router, useValue: { navigateByUrl: jasmine.createSpy('navigateByUrl') } }
       ]
     }).compileComponents();
