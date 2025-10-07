@@ -25,7 +25,13 @@ describe('TelegramSettingsPageComponent', () => {
         {
           provide: TelegramSettingsService,
           useValue: {
-            getSettings: () => of({ chatId: '12345' }),
+            getSettings: () =>
+              of({
+                phoneNumber: '994551234567',
+                chatId: '12345',
+                lastSyncedAt: '2024-01-01T00:00:00.000Z',
+                botTokenConfigured: true
+              }),
             updateSettings: () => updateSubject.asObservable()
           }
         },
@@ -43,13 +49,13 @@ describe('TelegramSettingsPageComponent', () => {
     await fixture.whenStable();
   });
 
-  it('loads the current chat id into the form', () => {
-    const input = element.querySelector('input[formcontrolname="chatId"]') as HTMLInputElement;
-    expect(input.value).toBe('12345');
+  it('loads the current phone number into the form', () => {
+    const input = element.querySelector('input[formcontrolname="phoneNumber"]') as HTMLInputElement;
+    expect(input.value).toBe('994551234567');
   });
 
-  it('validates the chat id field and shows an error message when empty', async () => {
-    const input = element.querySelector('input[formcontrolname="chatId"]') as HTMLInputElement;
+  it('validates the phone number field and shows an error message when empty', async () => {
+    const input = element.querySelector('input[formcontrolname="phoneNumber"]') as HTMLInputElement;
     input.value = '';
     input.dispatchEvent(new Event('input'));
     input.dispatchEvent(new Event('blur'));
@@ -63,12 +69,17 @@ describe('TelegramSettingsPageComponent', () => {
     );
   });
 
-  it('submits the chat id and shows a success toast', async () => {
+  it('submits the phone number and shows a success toast', async () => {
     const form = element.querySelector('form') as HTMLFormElement;
     form.dispatchEvent(new Event('submit'));
     fixture.detectChanges();
 
-    updateSubject.next({});
+    updateSubject.next({
+      phoneNumber: '994551234567',
+      chatId: '12345',
+      lastSyncedAt: '2024-01-01T00:00:00.000Z',
+      botTokenConfigured: true
+    });
     updateSubject.complete();
     await fixture.whenStable();
 

@@ -1,0 +1,14 @@
+{
+  "botToken": "",
+  "autoCreate": {
+    "enabled": false,
+    "apiId": null,
+    "apiHash": "",
+    "session": "",
+    "botName": "Cargo Broker Bot",
+    "botUsername": "CargoBrokerBot",
+    "description": "",
+    "about": "",
+    "commands": []
+  }
+}

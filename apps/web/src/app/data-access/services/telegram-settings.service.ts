@@ -14,7 +14,7 @@ export class TelegramSettingsService {
     return this.http.get<TelegramSettings>(this.endpoint);
   }
 
-  updateSettings(chatId: string) {
-    return this.http.put<TelegramSettings>(this.endpoint, { chatId });
+  updateSettings(phoneNumber: string) {
+    return this.http.put<TelegramSettings>(this.endpoint, { phoneNumber });
   }
 }

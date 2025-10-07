@@ -29,26 +29,35 @@ import { ToastService } from '../../shared/ui/toast/toast.service';
       </header>
 
       <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div
+          *ngIf="!botConfigured()"
+          class="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+        >
+          {{ 'admin.telegram.form.missingBotToken' | translate }}
+        </div>
         <form class="space-y-6" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
           <app-form-field
-            [label]="'admin.telegram.form.chatId.label' | translate"
-            [hint]="'admin.telegram.form.chatId.hint' | translate"
-            [error]="controlError(form.get('chatId'))"
+            [label]="'admin.telegram.form.phoneNumber.label' | translate"
+            [hint]="'admin.telegram.form.phoneNumber.hint' | translate"
+            [error]="controlError(form.get('phoneNumber'))"
             [required]="true"
           >
             <input
               type="text"
-              formControlName="chatId"
+              formControlName="phoneNumber"
               class="input"
               autocomplete="off"
               [attr.aria-busy]="loading()"
-              placeholder="{{ 'admin.telegram.form.chatId.placeholder' | translate }}"
+              placeholder="{{ 'admin.telegram.form.phoneNumber.placeholder' | translate }}"
             />
           </app-form-field>
 
           <div class="flex items-center justify-between gap-4">
             <p class="text-xs text-slate-500" *ngIf="lastUpdated() as timestamp">
               {{ 'admin.telegram.lastUpdated' | translate : { timestamp } }}
+            </p>
+            <p class="text-xs text-slate-500" *ngIf="chatId() as chat">
+              {{ 'admin.telegram.form.currentChat' | translate : { chat } }}
             </p>
             <app-button
               variant="primary"
@@ -58,7 +67,11 @@ import { ToastService } from '../../shared/ui/toast/toast.service';
             >
               <span class="flex items-center gap-2">
                 <span>{{ 'admin.telegram.form.actions.save' | translate }}</span>
-                <span *ngIf="saving()" class="h-2 w-2 animate-pulse rounded-full bg-white" aria-hidden="true"></span>
+                <span
+                  *ngIf="saving()"
+                  class="h-2 w-2 animate-pulse rounded-full bg-white"
+                  aria-hidden="true"
+                ></span>
               </span>
             </app-button>
           </div>
@@ -74,12 +87,14 @@ export class TelegramSettingsPageComponent {
   private readonly toast = inject(ToastService);
 
   readonly form = this.fb.nonNullable.group({
-    chatId: ['', [Validators.required, Validators.pattern(/^[-\d]+$/)]]
+    phoneNumber: ['', [Validators.required, Validators.pattern(/^[\d\s()+-]+$/)]]
   });
 
   readonly loading = signal(true);
   readonly saving = signal(false);
   readonly lastUpdated = signal<string | null>(null);
+  readonly chatId = signal<string | null>(null);
+  readonly botConfigured = signal<boolean>(true);
 
   constructor() {
     this.settingsService
@@ -87,8 +102,10 @@ export class TelegramSettingsPageComponent {
       .pipe(takeUntilDestroyed())
       .subscribe({
         next: (settings) => {
-          this.form.patchValue({ chatId: settings.chatId ?? '' });
-          this.lastUpdated.set(new Date().toLocaleString());
+          this.form.patchValue({ phoneNumber: settings.phoneNumber ?? '' });
+          this.chatId.set(settings.chatId);
+          this.botConfigured.set(settings.botTokenConfigured);
+          this.lastUpdated.set(settings.lastSyncedAt ? new Date(settings.lastSyncedAt).toLocaleString() : null);
           this.loading.set(false);
         },
         error: (error) => {
@@ -128,16 +145,18 @@ export class TelegramSettingsPageComponent {
       return;
     }
 
-    const chatId = this.form.getRawValue().chatId.trim();
+    const phoneNumber = this.form.getRawValue().phoneNumber.trim();
     this.saving.set(true);
 
     try {
-      await firstValueFrom(this.settingsService.updateSettings(chatId));
+      const settings = await firstValueFrom(this.settingsService.updateSettings(phoneNumber));
       this.toast.show({
         variant: 'success',
         message: this.translate.instant('admin.telegram.notifications.saved')
       });
-      this.lastUpdated.set(new Date().toLocaleString());
+      this.chatId.set(settings.chatId);
+      this.botConfigured.set(settings.botTokenConfigured);
+      this.lastUpdated.set(settings.lastSyncedAt ? new Date(settings.lastSyncedAt).toLocaleString() : new Date().toLocaleString());
     } catch (error) {
       console.error('Failed to update telegram settings', error);
       this.toast.show({
