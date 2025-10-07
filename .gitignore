@@ -22,5 +22,6 @@ dist
 
 # Generated
 apps/web/node_modules
+apps/server/var/
 
 web/node_modules

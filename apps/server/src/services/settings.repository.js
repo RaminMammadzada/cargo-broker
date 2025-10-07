@@ -1,12 +1,26 @@
 import { readFile, writeFile, mkdir } from 'fs/promises';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname, isAbsolute, resolve } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
 
-const SETTINGS_FILE_URL = new URL('../data/settings.json', import.meta.url);
+const FALLBACK_FILE_URL = new URL('../../var/telegram-settings.json', import.meta.url);
+
+function resolveSettingsFileUrl(explicitUrl) {
+  if (explicitUrl) {
+    return explicitUrl;
+  }
+
+  const envPath = process.env.TELEGRAM_SETTINGS_FILE;
+  if (envPath) {
+    const absolutePath = isAbsolute(envPath) ? envPath : resolve(process.cwd(), envPath);
+    return pathToFileURL(absolutePath);
+  }
+
+  return FALLBACK_FILE_URL;
+}
 
 export class SettingsRepository {
-  constructor(fileUrl = SETTINGS_FILE_URL) {
-    this.fileUrl = fileUrl;
+  constructor(fileUrl) {
+    this.fileUrl = resolveSettingsFileUrl(fileUrl);
   }
 
   async getTelegramSettings() {

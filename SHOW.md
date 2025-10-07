@@ -25,7 +25,13 @@ The server uses the Bot Token to authenticate outgoing requests.
 
    > The Express app listens on `http://localhost:3000` by default. Adjust the `PORT` environment variable if you need a different port.
 
-2. (Optional) Run behind a process manager such as PM2 or configure the variable in your deployment platform's secret store when hosting remotely.
+2. (Optional) Override where the chat configuration is stored. By default the API keeps a JSON file under `apps/server/var/telegram-settings.json` (which is ignored by git and created on first save). To place it elsewhere, set `TELEGRAM_SETTINGS_FILE` to an absolute or relative path **before** starting the server:
+
+   ```bash
+   export TELEGRAM_SETTINGS_FILE="/etc/cargo-broker/telegram-settings.json"
+   ```
+
+3. (Optional) Run behind a process manager such as PM2 or configure the variables in your deployment platform's secret store when hosting remotely.
 
 ## 3. Obtain the admin chat ID
 
@@ -54,7 +60,7 @@ The UI stores a single chat ID. Most teams target either a private admin chat wi
 2. Navigate to `http://localhost:4200/admin/telegram`.
 3. Paste the chat ID into the **Telegram chat ID** field and click **Save**.
    - The page validates the format (digits with an optional leading dash).
-   - Successful updates show a green toast and persist to `apps/server/src/data/settings.json`.
+   - Successful updates show a green toast and persist to the runtime settings file configured in step 2.
 
 ## 5. Trigger a notification test
 
